@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Fetch Internship Application</string>
+    <string name="ex_id">Ex ID</string>
 </resources>
