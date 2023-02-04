@@ -10,8 +10,8 @@ import com.google.gson.Gson
 class MainActivity : AppCompatActivity() {
 
     // Will be initialized in onCreate
-    private lateinit var dataAdapter: DataAdapter
-    private lateinit var binding:ActivityMainBinding
+    private lateinit var dataAdapter: DataAdapter       // Adapter for RecyclerView
+    private lateinit var binding:ActivityMainBinding    // For binding to views
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,31 +38,30 @@ class MainActivity : AppCompatActivity() {
 
     // Retrieves the data from Json file
     fun retrieveData(): MutableList<DataItem> {
-        var jsonString: String
-        var output = mutableListOf<DataItem>()  // List to output
+        val output = mutableListOf<DataItem>()  // List to output
         var newDataItem: DataItem               // DataItem to add to output
         val gson = Gson()
 
         // Read Json file to a List of Strings
-        jsonString = application.assets.open("fetchdataset.json")
+        val jsonString: String = application.assets.open("fetchdataset.json")
             .bufferedReader()
             .use { it.readText() }
 
+        // Create a mutable list of lines of the Json string
         var lines = jsonString.split("\n")
+        lines = lines.toMutableList()
+        lines.remove("[")
+        lines.remove("]")
 
-        var newLines = lines.toMutableList()
-        newLines.remove("[")
-        newLines.remove("]")
-
-        // Translate to Kotlin class DataItem and add to output
-        for (line in newLines) {
-            var trimmedLine = line.trim().dropLast(1)
+        // Deserialize to Kotlin class DataItem and add to output
+        for (line in lines) {
+            val trimmedLine = line.trim().dropLast(1)   // Remove the comma
             try {
                 newDataItem = gson.fromJson(trimmedLine, DataItem::class.java)
                 if (newDataItem.name != null && newDataItem.name != "") {
                     output.add(newDataItem)
                 }
-            } catch(e: Exception) { }
+            } catch(_: Exception) { }
         }
 
         return output
