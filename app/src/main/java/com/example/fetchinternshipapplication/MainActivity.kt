@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
 
         // Read Json file to a List of Strings
-        val jsonString: String = application.assets.open("fetchdataset.json")
+        val jsonString: String = application.assets.open("hiring.json")
             .bufferedReader()
             .use { it.readText() }
 
