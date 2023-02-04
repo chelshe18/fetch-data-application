@@ -1,15 +1,10 @@
 package com.example.fetchinternshipapplication
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fetchinternshipapplication.databinding.ActivityMainBinding
 import com.example.fetchinternshipapplication.databinding.TableItemBinding
-import org.w3c.dom.Text
 
 
 class DataAdapter ()
@@ -32,10 +27,43 @@ class DataAdapter ()
         return items.size
     }
 
-    // To add the data to the RecyclerView Adapter
+    // Add the data to the RecyclerView Adapter
     fun setData(dataList: MutableList<DataItem>) {
         items = dataList
+        sortData(dataList, 0, dataList.size)
     }
+
+    fun sortData(list: MutableList<DataItem>, start: Int, end: Int) {
+        if (end - start <= 1) {
+            return
+        }
+        val partitionLocation = partition(list, start, end)
+        sortData(list, start, partitionLocation)
+        sortData(list, partitionLocation + 1, end)
+    }
+
+    fun partition(value: MutableList<DataItem>?, start: Int, end: Int): Int {
+        if (value == null || value.size == 0) {
+            return -1
+        }
+        var partitionIndex = start + 1
+        val pivot = value[start]
+
+        for (i in start + 1 until end) {
+            if (value[i] < pivot) {
+                var temp = value[partitionIndex]
+                value[partitionIndex] = value[i]
+                value[i] = temp
+                partitionIndex ++
+            }
+        }
+        value[start] = value[partitionIndex - 1]
+        value[partitionIndex - 1] = pivot
+
+        return partitionIndex - 1
+    }
+
+
 
     // Binds the data from the item list to the views
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
@@ -49,8 +77,8 @@ class DataAdapter ()
         val itemName: TextView = binding.itemName
 
         fun bind(dataItem: DataItem) {
-            itemId.setText(dataItem.id)
-            itemListId.setText(dataItem.listId)
+            itemId.setText(dataItem.id.toString())
+            itemListId.setText(dataItem.listId.toString())
             itemName.setText(dataItem.name)
         }
     }
