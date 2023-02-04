@@ -6,14 +6,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fetchinternshipapplication.databinding.TableItemBinding
 
-class DataAdapter
-    : RecyclerView.Adapter<DataAdapter.DataViewHolder>() {
+class DataAdapter : RecyclerView.Adapter<DataAdapter.DataViewHolder>() {
 
     private var items: MutableList<DataItem> = ArrayList()
 
     // Creates the ItemViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
-
         return DataViewHolder(TableItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -21,7 +19,7 @@ class DataAdapter
         )
     }
 
-    // Returns number of items in list
+    // Returns number of items in list of items
     override fun getItemCount(): Int {
         return items.size
     }
@@ -32,36 +30,36 @@ class DataAdapter
         sortData(dataList, 0, dataList.size)    // Sort the data list
     }
 
-    // Sorts the DataItems using quicksort
+    // Sorts the DataItems using Quicksort
     private fun sortData(list: MutableList<DataItem>, start: Int, end: Int) {
         if (end - start <= 1) {
             return
         }
-        val partitionLocation = partition(list, start, end)
-        sortData(list, start, partitionLocation)
-        sortData(list, partitionLocation + 1, end)
+        val partitionLocation = partition(list, start, end) // Find partition
+        sortData(list, start, partitionLocation)            // Sort objects left of the partition
+        sortData(list, partitionLocation + 1, end)     // Sort objects right of the partition
     }
 
-    // Partitioner for quicksort
+    // Partitioner for Quicksort
     private fun partition(value: MutableList<DataItem>?, start: Int, end: Int): Int {
         if (value == null || value.size == 0) {
             return -1
         }
         var partitionIndex = start + 1
-        val pivot = value[start]
+        val pivot = value[start]                    // Start with first object as pivot
         var temp: DataItem
 
-        for (i in start + 1 until end) {
-            if (value[i] < pivot) {
-                temp = value[partitionIndex]
+        for (i in start + 1 until end) {      // Iterate through the list
+            if (value[i] < pivot) {                 // If a DataItem is lower than the pivot
+                temp = value[partitionIndex]        // Swap that DataItem and the partition value
                 value[partitionIndex] = value[i]
                 value[i] = temp
-                partitionIndex ++
+                partitionIndex ++                   // Increase partition index
             }
         }
+        // Switch the pivot value to the correct location and return that location
         value[start] = value[partitionIndex - 1]
         value[partitionIndex - 1] = pivot
-
         return partitionIndex - 1
     }
 

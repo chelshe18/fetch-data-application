@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dataAdapter: DataAdapter       // Adapter for RecyclerView
     private lateinit var binding:ActivityMainBinding    // For binding to views
 
+    // First method called when MainActivity is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         addDataList()       // Add the list of data to the adapter
     }
 
+    // Initializes the data table view
     private fun initDataTableView() {
         binding.rvDataTable.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -31,23 +33,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Add list of data to the RecyclerView
+    // Adds list of data to the RecyclerView
     private fun addDataList() {
         dataAdapter.setData(retrieveData())
     }
 
-    // Retrieves the data from Json file
-    fun retrieveData(): MutableList<DataItem> {
+    // Retrieves the data from JSON file
+    private fun retrieveData(): MutableList<DataItem> {
         val output = mutableListOf<DataItem>()  // List to output
         var newDataItem: DataItem               // DataItem to add to output
         val gson = Gson()
 
-        // Read Json file to a List of Strings
+        // Read JSON file to a List of Strings
         val jsonString: String = application.assets.open("hiring.json")
             .bufferedReader()
             .use { it.readText() }
 
-        // Create a mutable list of lines of the Json string
+        // Create a mutable list of lines of the JSON string
         var lines = jsonString.split("\n")
         lines = lines.toMutableList()
         lines.remove("[")
