@@ -33,10 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     // Add list of data to the RecyclerView
     private fun addDataList() {
-        var item1 = DataItem("12", "1", "One")
-        var item2 = DataItem("43", "2", "Two")
-        var item3 = DataItem("34", "3", "Three")
-        var data = mutableListOf<DataItem>(item2, item1, item3)
         dataAdapter.setData(retrieveData())
     }
 
