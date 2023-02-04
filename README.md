@@ -9,6 +9,6 @@ for the ease of sorting. The sorting algorithm implemented in this project is a 
 
 This project was created using:
 
-- Kotlin 1.8  
-- Android Studio 2022.1.1  
-- Gson 2.8.9  
+- Kotlin version: 1.8  
+- Android Studio version: 2022.1.1  
+- Gson version: 2.8.9  
