@@ -2,10 +2,10 @@ package com.example.fetchinternshipapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fetchinternshipapplication.databinding.ActivityMainBinding
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +36,39 @@ class MainActivity : AppCompatActivity() {
         var item1 = DataItem("12", "1", "One")
         var item2 = DataItem("43", "2", "Two")
         var item3 = DataItem("34", "3", "Three")
-        var data = mutableListOf<DataItem>(item1, item2, item3)
-        dataAdapter.setData(data)
+        var data = mutableListOf<DataItem>(item2, item1, item3)
+        dataAdapter.setData(retrieveData())
+    }
+
+    // Retrieves the data from Json file
+    fun retrieveData(): MutableList<DataItem> {
+        var jsonString: String
+        var output = mutableListOf<DataItem>()  // List to output
+        var newDataItem: DataItem               // DataItem to add to output
+        val gson = Gson()
+
+        // Read Json file to a List of Strings
+        jsonString = application.assets.open("fetchdataset.json")
+            .bufferedReader()
+            .use { it.readText() }
+
+        var lines = jsonString.split("\n")
+
+        var newLines = lines.toMutableList()
+        newLines.remove("[")
+        newLines.remove("]")
+
+        // Translate to Kotlin class DataItem and add to output
+        for (line in newLines) {
+            var trimmedLine = line.trim().dropLast(1)
+            try {
+                newDataItem = gson.fromJson(trimmedLine, DataItem::class.java)
+                if (newDataItem.name != null && newDataItem.name != "") {
+                    output.add(newDataItem)
+                }
+            } catch(e: Exception) { }
+        }
+
+        return output
     }
 }
