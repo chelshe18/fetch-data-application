@@ -1,6 +1,6 @@
 ## General Information
 
-This is a Kotlin app created on Android Studio for an application to Fetch Rewards. Its purpose is to retrieve the data from a Json file and display it in an easy-to-read 
+This is a Kotlin app created on Android Studio; Its purpose is to retrieve the data from a Json file and display it in an easy-to-read 
 list to the user. It deserializes the Json file to create objects that store the data. The data is stored in objects of a class that implements the Comparable interface
 for the ease of sorting. The sorting algorithm implemented in this project is a Quicksort algorithm, optimizing efficiency of time and space.
 
